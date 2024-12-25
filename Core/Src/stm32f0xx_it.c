@@ -43,6 +43,8 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 
+uint8_t cnt_led = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -129,6 +131,11 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  if(cnt_led > 0)
+	cnt_led--;
+  else if(!(LED_GPIO_Port->IDR & LED_Pin))
+	LED_GPIO_Port->BSRR = LED_Pin;
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();

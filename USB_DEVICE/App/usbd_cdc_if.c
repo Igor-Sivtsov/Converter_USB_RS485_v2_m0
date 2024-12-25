@@ -24,6 +24,8 @@
 
 /* USER CODE BEGIN INCLUDE */
 
+#include "uart.h"
+
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,6 +34,9 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+
+extern uint8_t cnt_led;
+extern struct exchange rx, tx;
 
 /* USER CODE END PV */
 
@@ -262,6 +267,17 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   /* USER CODE BEGIN 6 */
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+
+  if(tx.state == waiting && rx.state == waiting)
+  {
+	  LED_GPIO_Port->BSRR = LED_Pin << 16;
+	  cnt_led = 50;
+
+	  memcpy(tx.buf, Buf, (size_t)*Len);
+	  tx.buf_len = (size_t)*Len;
+	  tx.state = begin_transfer;
+  }
+
   return (USBD_OK);
   /* USER CODE END 6 */
 }
