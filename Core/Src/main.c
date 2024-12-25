@@ -96,6 +96,9 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
+  LED_GPIO_Port->BSRR = LED_Pin;
+  USB_CTRL_GPIO_Port->BSRR = USB_CTRL_Pin << 16;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
