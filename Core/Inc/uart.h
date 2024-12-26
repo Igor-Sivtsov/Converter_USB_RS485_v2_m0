@@ -6,6 +6,7 @@
 typedef enum
 {
 	waiting,
+	in_progress,
 	completed
 }  	state;
 
@@ -16,8 +17,6 @@ struct exchange
 	uint16_t	cnt;
 	state 		state;
 };
-
-//struct exchange rx = {}, tx;
 
 void start_uart_resive();
 void start_uart_transmit();

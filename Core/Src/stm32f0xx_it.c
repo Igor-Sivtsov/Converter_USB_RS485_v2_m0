@@ -167,7 +167,12 @@ void USART3_4_IRQHandler(void)
 	else
 	{
 		if((USART3->ISR & USART_ISR_RXNE) == USART_ISR_RXNE)
+		{
+			if(rx.state == waiting)
+				rx.state = in_progress;
+
 			rx.buf[rx.cnt++] = USART3->RDR;
+		}
 
 		if (USART3->ISR & USART_ISR_IDLE)
 		{
