@@ -23,6 +23,9 @@
 #include "stm32f0xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "uart.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +47,9 @@
 /* USER CODE BEGIN PV */
 
 uint8_t cnt_led = 0;
+uint8_t clear;
+
+extern struct exchange rx, tx;
 
 /* USER CODE END PV */
 
@@ -155,6 +161,35 @@ void SysTick_Handler(void)
 void USART3_4_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_4_IRQn 0 */
+
+	if(USART3->ISR & (USART_ISR_PE | USART_ISR_FE | USART_ISR_NE | USART_ISR_ORE))
+		clear = (uint8_t)(USART3->RDR);
+	else
+	{
+		if((USART3->ISR & USART_ISR_RXNE) == USART_ISR_RXNE)
+			rx.buf[rx.cnt++] = USART3->RDR;
+
+		if (USART3->ISR & USART_ISR_IDLE)
+		{
+			rx.buf_len 	= rx.cnt;
+			rx.state 	= completed;
+
+			USART3->ICR |= USART_ICR_IDLECF;
+	    }
+
+		if((USART3->ISR & USART_ISR_TC) == USART_ISR_TC)
+		{
+			if(tx.cnt == tx.buf_len)
+			{
+				USART3->CR1 &= ~USART_CR1_TE;
+				USART3->ICR |= USART_ICR_TCCF;
+
+				tx.state = completed;
+			}
+			else
+				USART3->TDR = tx.buf[tx.cnt++];
+		}
+	}
 
   /* USER CODE END USART3_4_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
