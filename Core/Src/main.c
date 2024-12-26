@@ -24,6 +24,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "string.h"
+#include "uart.h"
+#include "usbd_cdc_if.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +48,9 @@
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
+
+extern struct exchange rx, tx;
+extern uint8_t UserTxBufferFS[];
 
 /* USER CODE END PV */
 
@@ -95,12 +102,38 @@ int main(void)
   LED_GPIO_Port->BSRR = LED_Pin;
   USB_CTRL_GPIO_Port->BSRR = USB_CTRL_Pin << 16;
 
+  start_uart_resive();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
+	  if(tx.state == completed)
+	  {
+		  start_uart_resive();
+
+		  memset(&tx.buf, 0, tx.buf_len);
+		  tx.buf_len = 0;
+		  tx.cnt = 0;
+		  tx.state = waiting;
+	  }
+
+	  if(rx.state == completed)
+	  {
+		  memcpy(UserTxBufferFS, rx.buf, rx.buf_len);
+		  size_t len = rx.buf_len;
+
+		  memset(&rx.buf, 0, rx.buf_len);
+		  rx.buf_len = 0;
+		  rx.cnt = 0;
+		  rx.state = waiting;
+
+		  CDC_Transmit_FS(UserTxBufferFS, len);
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
