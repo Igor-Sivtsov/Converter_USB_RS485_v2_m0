@@ -37,7 +37,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 extern uint8_t cnt_led;
-extern struct exchange rx, tx;
+extern exchange rx, tx;
 
 /* USER CODE END PV */
 
@@ -274,8 +274,8 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 	  LED_GPIO_Port->BSRR = LED_Pin << 16;
 	  cnt_led = 50;
 
-	  tx.buf_len = (size_t)*Len;
-	  tx.state = in_progress;
+	  tx.buf_len = *Len;
+	  tx.state 	 = in_progress;
 	  memcpy(tx.buf, Buf, tx.buf_len);
 
 	  start_uart_transmit();

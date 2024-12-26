@@ -49,7 +49,7 @@
 uint8_t cnt_led = 0;
 uint8_t clear;
 
-extern struct exchange rx, tx;
+extern exchange rx, tx;
 
 /* USER CODE END PV */
 

@@ -3,6 +3,8 @@
 
 #include "main.h"
 
+#define BUF_SIZE 1000
+
 typedef enum
 {
 	waiting,
@@ -10,15 +12,16 @@ typedef enum
 	completed
 }  	state;
 
-struct exchange
+typedef struct
 {
-	uint8_t		buf[1000];
+	uint8_t		buf[BUF_SIZE];
 	size_t 		buf_len;
 	uint16_t	cnt;
 	state 		state;
-};
+} 	exchange;
 
 void start_uart_resive();
 void start_uart_transmit();
+void clear_obj(exchange* obj);
 
 #endif /* INC_UART_H_ */

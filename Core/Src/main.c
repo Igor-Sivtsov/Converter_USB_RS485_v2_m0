@@ -49,7 +49,7 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 
-extern struct exchange rx, tx;
+extern exchange rx, tx;
 extern uint8_t UserTxBufferFS[];
 
 /* USER CODE END PV */
@@ -114,22 +114,14 @@ int main(void)
 	  if(tx.state == completed)
 	  {
 		  start_uart_resive();
-
-		  memset(&tx.buf, 0, tx.buf_len);
-		  tx.buf_len = 0;
-		  tx.cnt = 0;
-		  tx.state = waiting;
+		  clear_obj(&tx);
 	  }
 
 	  if(rx.state == completed)
 	  {
 		  memcpy(UserTxBufferFS, rx.buf, rx.buf_len);
 		  size_t len = rx.buf_len;
-
-		  memset(&rx.buf, 0, rx.buf_len);
-		  rx.buf_len = 0;
-		  rx.cnt = 0;
-		  rx.state = waiting;
+		  clear_obj(&rx);
 
 		  CDC_Transmit_FS(UserTxBufferFS, len);
 	  }
