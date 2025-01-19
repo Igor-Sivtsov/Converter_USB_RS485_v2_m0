@@ -24,3 +24,11 @@ void clear_obj(exchange *obj)
 	obj->cnt = 0;
 	obj->state = waiting;
 }
+
+void timeout_handler()
+{
+	clear_obj(&tx);
+	clear_obj(&rx);
+
+	start_uart_resive();
+}

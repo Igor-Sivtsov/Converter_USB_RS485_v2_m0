@@ -113,8 +113,8 @@ int main(void)
   {
 	  if(tx.state == completed)
 	  {
-		  start_uart_resive();
 		  clear_obj(&tx);
+		  start_uart_resive();
 	  }
 
 	  if(rx.state == completed)
