@@ -23,5 +23,6 @@ typedef struct
 void start_uart_resive();
 void start_uart_transmit();
 void clear_obj(exchange* obj);
+void reset_state();
 
 #endif /* INC_UART_H_ */
