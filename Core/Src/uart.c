@@ -3,6 +3,8 @@
 
 exchange rx = {}, tx = {};
 
+extern uint8_t clear;
+
 void start_uart_resive()
 {
 	TX_EN_GPIO_Port->BSRR = TX_EN_Pin << 16;
@@ -23,4 +25,14 @@ void clear_obj(exchange *obj)
 	obj->buf_len = 0;
 	obj->cnt = 0;
 	obj->state = waiting;
+}
+
+void reset_state()
+{
+	clear = (uint8_t)(USART3->RDR);
+	// Сброс таймера
+	memset(&tx, 0, sizeof(tx));
+	memset(&rx, 0, sizeof(rx));
+
+	start_uart_resive();
 }

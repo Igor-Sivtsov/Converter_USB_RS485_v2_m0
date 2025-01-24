@@ -266,22 +266,22 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
+	USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-  if(tx.state == waiting && rx.state == waiting)
-  {
-	  LED_GPIO_Port->BSRR = LED_Pin << 16;
-	  cnt_led = 50;
+  	if(tx.state != waiting)
+  		reset_state();
 
-	  tx.buf_len = *Len;
-	  tx.state 	 = in_progress;
-	  memcpy(tx.buf, Buf, tx.buf_len);
+  	LED_GPIO_Port->BSRR = LED_Pin << 16;
+  		cnt_led = 50;
 
-	  start_uart_transmit();
-  }
+  	tx.buf_len = *Len;
+  	tx.state 	 = in_progress;
+  	memcpy(tx.buf, Buf, tx.buf_len);
 
-  return (USBD_OK);
+  	start_uart_transmit();
+
+  	return (USBD_OK);
   /* USER CODE END 6 */
 }
 
