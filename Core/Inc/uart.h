@@ -24,5 +24,6 @@ void start_uart_resive();
 void start_uart_transmit();
 void clear_obj(exchange* obj);
 void reset_state();
+void uart_error_handler();
 
 #endif /* INC_UART_H_ */

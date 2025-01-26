@@ -3,8 +3,6 @@
 
 exchange rx = {}, tx = {};
 
-extern uint8_t clear;
-
 void start_uart_resive()
 {
 	TX_EN_GPIO_Port->BSRR = TX_EN_Pin << 16;
@@ -29,10 +27,16 @@ void clear_obj(exchange *obj)
 
 void reset_state()
 {
-	clear = (uint8_t)(USART3->RDR);
-	// Сброс таймера
 	memset(&tx, 0, sizeof(tx));
 	memset(&rx, 0, sizeof(rx));
 
-	start_uart_resive();
+	uart_error_handler();
+}
+
+inline void uart_error_handler()
+{
+	if(USART3->ISR & USART_ISR_PE)	USART3->ICR |= USART_ICR_PECF;
+	if(USART3->ISR & USART_ISR_FE)	USART3->ICR |= USART_ICR_FECF;
+	if(USART3->ISR & USART_ISR_NE)	USART3->ICR |= USART_ICR_NCF;
+	if(USART3->ISR & USART_ISR_ORE)	USART3->ICR |= USART_ICR_ORECF;
 }
