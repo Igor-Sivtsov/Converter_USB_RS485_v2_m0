@@ -12,8 +12,10 @@ void start_uart_resive()
 void start_uart_transmit()
 {
 	USART3->CR1 &= ~USART_CR1_RE;
+	USART3->CR1 |=  USART_CR1_TE;
+
 	TX_EN_GPIO_Port->BSRR = TX_EN_Pin;
-	USART3->CR1 |= USART_CR1_TE;
+
 	USART3->TDR = tx.buf[tx.cnt++];
 }
 
@@ -21,8 +23,8 @@ void clear_obj(exchange *obj)
 {
 	memset(&obj->buf, 0, obj->buf_len);
 	obj->buf_len = 0;
-	obj->cnt = 0;
-	obj->state = waiting;
+	obj->cnt 	 = 0;
+	obj->state   = waiting;
 }
 
 void reset_state()
