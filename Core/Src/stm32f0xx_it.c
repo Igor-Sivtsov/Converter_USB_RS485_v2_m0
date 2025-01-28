@@ -162,18 +162,21 @@ void USART3_4_IRQHandler(void)
   /* USER CODE BEGIN USART3_4_IRQn 0 */
 
 	if(USART3->ISR & (USART_ISR_PE | USART_ISR_FE | USART_ISR_NE | USART_ISR_ORE))
-		uart_error_handler();
+		reset_state();
 	else
 	{
 		if(USART3->ISR & USART_ISR_RXNE)
 		{
+			// Стоп таймер
 			if(rx.state == waiting)
 				rx.state = in_progress;
 
 			rx.buf[rx.cnt++] = USART3->RDR;
+			// Старт таймер
 		}
 		if (USART3->ISR & USART_ISR_IDLE)
 		{
+			// Стоп таймер
 			rx.buf_len 	= rx.cnt;
 			rx.state 	= completed;
 

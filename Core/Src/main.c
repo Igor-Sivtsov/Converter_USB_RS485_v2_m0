@@ -113,15 +113,19 @@ int main(void)
   {
 	  if(tx.state == completed)
 	  {
-		  clear_obj(&tx);
+		  //clear_obj(&tx);
+		  memset(&tx, 0, sizeof(tx));
 		  start_uart_resive();
 	  }
 
 	  if(rx.state == completed)
 	  {
-		  memcpy(UserTxBufferFS, rx.buf, rx.buf_len);
 		  size_t len = rx.buf_len;
-		  clear_obj(&rx);
+
+		  memcpy(UserTxBufferFS, rx.buf, rx.buf_len);
+		  memset(&rx, 0, sizeof(rx));
+		  //size_t len = rx.buf_len;
+		  //clear_obj(&rx);
 
 		  CDC_Transmit_FS(UserTxBufferFS, len);
 	  }
