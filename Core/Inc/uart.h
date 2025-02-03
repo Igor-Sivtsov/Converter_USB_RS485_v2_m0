@@ -7,18 +7,18 @@
 
 typedef enum
 {
-	waiting,
-	in_progress,
-	completed
-}  	state;
+  waiting,
+  in_progress,
+  completed
+} state;
 
 typedef struct
 {
-	uint8_t		buf[BUF_SIZE];
-	size_t 		buf_len;
-	uint16_t	cnt;
-	state 		state;
-} 	exchange;
+  uint8_t	buf[BUF_SIZE];
+  size_t 	buf_len;
+  uint16_t	cnt;
+  state 	state;
+} exchange;
 
 void start_uart_resive();
 void start_uart_transmit();
