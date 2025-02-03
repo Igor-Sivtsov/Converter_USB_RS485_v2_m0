@@ -110,17 +110,16 @@ int main(void)
 
   while (1)
   {
-	  if(tx.state == completed)
-	  {
-		  clean_obj(&tx);
-		  start_uart_resive();
-	  }
-
-	  if(rx.state == completed)
-	  {
-		  CDC_Transmit_FS(rx.buf, rx.buf_len);
-		  clean_obj(&rx);
-	  }
+    if(tx.state == completed)
+    {
+      clean_obj(&tx);
+      start_uart_resive();
+    }
+    if(rx.state == completed)
+    {
+      CDC_Transmit_FS(rx.buf, rx.buf_len);
+      clean_obj(&rx);
+    }
 
     /* USER CODE END WHILE */
 

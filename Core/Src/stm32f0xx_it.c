@@ -135,10 +135,10 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
-	if(cnt_led > 0)
-		cnt_led--;
-	else if(!(LED_GPIO_Port->IDR & LED_Pin))
-		LED_GPIO_Port->BSRR = LED_Pin;
+  if(cnt_led > 0)
+    cnt_led--;
+  else if(!(LED_GPIO_Port->IDR & LED_Pin))
+    LED_GPIO_Port->BSRR = LED_Pin;
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
@@ -161,40 +161,40 @@ void USART3_4_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_4_IRQn 0 */
 
-	if(USART3->ISR & (USART_ISR_PE | USART_ISR_FE | USART_ISR_NE | USART_ISR_ORE))
-		reset_state();
-	else
-	{
-		if(USART3->ISR & USART_ISR_RXNE)
-		{
-			if(rx.state == waiting)
-				rx.state = in_progress;
+  if(USART3->ISR & (USART_ISR_PE | USART_ISR_FE | USART_ISR_NE | USART_ISR_ORE))
+    reset_state();
+  else
+  {
+    if(USART3->ISR & USART_ISR_RXNE)
+    {
+      if(rx.state == waiting)
+    	  rx.state = in_progress;
 
-			rx.buf[rx.cnt++] = USART3->RDR;
-		}
-		if(USART3->ISR & USART_ISR_IDLE)
-		{
-			if(rx.cnt > 0)
-			{
-				rx.buf_len 	= rx.cnt;
-				rx.state 	= completed;
-			}
+        rx.buf[rx.cnt++] = USART3->RDR;
+    }
+    if(USART3->ISR & USART_ISR_IDLE)
+    {
+        if(rx.cnt > 0)
+        {
+          rx.buf_len 	= rx.cnt;
+          rx.state 	= completed;
+        }
 
-			USART3->ICR |= USART_ICR_IDLECF;
-	    }
-		if(USART3->ISR & USART_ISR_TC)
-		{
-			if(tx.cnt == tx.buf_len)
-			{
-				USART3->CR1 &= ~USART_CR1_TE;
-				USART3->ICR |=  USART_ICR_TCCF;
+        USART3->ICR |= USART_ICR_IDLECF;
+    }
+    if(USART3->ISR & USART_ISR_TC)
+    {
+      if(tx.cnt == tx.buf_len)
+      {
+        USART3->CR1 &= ~USART_CR1_TE;
+        USART3->ICR |=  USART_ICR_TCCF;
 
-				tx.state = completed;
-			}
-			else
-				USART3->TDR = tx.buf[tx.cnt++];
-		}
-	}
+        tx.state = completed;
+      }
+      else
+        USART3->TDR = tx.buf[tx.cnt++];
+    }
+  }
 
   /* USER CODE END USART3_4_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
