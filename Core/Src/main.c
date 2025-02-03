@@ -50,7 +50,6 @@ UART_HandleTypeDef huart3;
 /* USER CODE BEGIN PV */
 
 extern exchange rx, tx;
-extern uint8_t UserTxBufferFS[];
 
 /* USER CODE END PV */
 
@@ -113,21 +112,14 @@ int main(void)
   {
 	  if(tx.state == completed)
 	  {
-		  //clear_obj(&tx);
-		  memset(&tx, 0, sizeof(tx));
+		  clean_obj(&tx);
 		  start_uart_resive();
 	  }
 
 	  if(rx.state == completed)
 	  {
-		  size_t len = rx.buf_len;
-
-		  memcpy(UserTxBufferFS, rx.buf, rx.buf_len);
-		  memset(&rx, 0, sizeof(rx));
-		  //size_t len = rx.buf_len;
-		  //clear_obj(&rx);
-
-		  CDC_Transmit_FS(UserTxBufferFS, len);
+		  CDC_Transmit_FS(rx.buf, rx.buf_len);
+		  clean_obj(&rx);
 	  }
 
     /* USER CODE END WHILE */
