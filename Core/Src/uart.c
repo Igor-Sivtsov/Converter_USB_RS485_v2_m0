@@ -2,20 +2,22 @@
 #include "uart.h"
 
 exchange rx = {}, tx = {};
+uint8_t clean;
+
+static void reset_uart_error_flags();
 
 void start_uart_resive()
 {
 	TX_EN_GPIO_Port->BSRR = TX_EN_Pin << 16;
+	clean = USART3->RDR;
 	USART3->CR1 |= USART_CR1_RE;
 }
 
 void start_uart_transmit()
 {
 	USART3->CR1 &= ~USART_CR1_RE;
-	USART3->CR1 |=  USART_CR1_TE;
-
 	TX_EN_GPIO_Port->BSRR = TX_EN_Pin;
-
+	USART3->CR1 |= USART_CR1_TE;
 	USART3->TDR = tx.buf[tx.cnt++];
 }
 
@@ -29,13 +31,15 @@ void clean_obj(exchange* obj)
 
 void reset_state()
 {
-	memset(&tx, 0, sizeof(tx));
-	memset(&rx, 0, sizeof(rx));
+	reset_uart_error_flags();
 
-	uart_error_handler();
+	clean_obj(&tx);
+	clean_obj(&rx);
+
+	start_uart_resive();
 }
 
-inline void uart_error_handler()
+static void reset_uart_error_flags()
 {
 	if(USART3->ISR & USART_ISR_PE)	USART3->ICR |= USART_ICR_PECF;
 	if(USART3->ISR & USART_ISR_FE)	USART3->ICR |= USART_ICR_FECF;
