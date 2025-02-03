@@ -174,11 +174,13 @@ void USART3_4_IRQHandler(void)
 			rx.buf[rx.cnt++] = USART3->RDR;
 			// Старт таймер
 		}
-		if (USART3->ISR & USART_ISR_IDLE)
+		if(USART3->ISR & USART_ISR_IDLE)
 		{
-			// Стоп таймер
-			rx.buf_len 	= rx.cnt;
-			rx.state 	= completed;
+			if(rx.cnt > 0)
+			{
+				rx.buf_len 	= rx.cnt;
+				rx.state 	= completed;
+			}
 
 			USART3->ICR |= USART_ICR_IDLECF;
 	    }
