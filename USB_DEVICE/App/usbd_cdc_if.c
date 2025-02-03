@@ -269,8 +269,8 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, Buf);
 	USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-  	if(tx.state != waiting || rx.state != waiting)
-  		reset_state();
+  	if(tx.state != waiting) clean_obj(&tx);
+  	if(rx.state != waiting)	clean_obj(&rx);
 
   	LED_GPIO_Port->BSRR = LED_Pin << 16;
   		cnt_led = 50;

@@ -19,12 +19,12 @@ void start_uart_transmit()
 	USART3->TDR = tx.buf[tx.cnt++];
 }
 
-void clear_obj(exchange *obj)
+void clean_obj(exchange* obj)
 {
 	memset(&obj->buf, 0, obj->buf_len);
-	obj->buf_len = 0;
-	obj->cnt 	 = 0;
-	obj->state   = waiting;
+	obj->buf_len 	= 0;
+	obj->cnt 	 	= 0;
+	obj->state 		= waiting;
 }
 
 void reset_state()
