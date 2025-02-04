@@ -200,9 +200,6 @@ static void MX_USART3_UART_Init(void)
   }
   /* USER CODE BEGIN USART3_Init 2 */
 
-  for(int i = 0; i < 1000; i++)
-    __NOP();
-
   USART3->ICR |= USART_ICR_IDLECF | USART_ICR_TCCF;
   USART3->CR1 |= USART_CR1_RXNEIE | USART_CR1_IDLEIE | USART_CR1_TCIE;
 
