@@ -65,13 +65,13 @@ const uint8_t serial_number[] __attribute__((section(".sn_section"))) = "FORWARD
   * @{
   */
 
-#define USBD_VID                        1003
-#define USBD_LANGID_STRING              1033
-#define USBD_MANUFACTURER_STRING        "Forward"
-#define USBD_PID_FS                     24853
-#define USBD_PRODUCT_STRING_FS          "Converter USB-RS485"
-#define USBD_CONFIGURATION_STRING_FS    "CDC Config"
-#define USBD_INTERFACE_STRING_FS        "CDC Interface"
+#define USBD_VID     1003
+#define USBD_LANGID_STRING     1033
+#define USBD_MANUFACTURER_STRING     "Forward"
+#define USBD_PID_FS     24853
+#define USBD_PRODUCT_STRING_FS     "Converter USB-RS485"
+#define USBD_CONFIGURATION_STRING_FS     "CDC Config"
+#define USBD_INTERFACE_STRING_FS     "CDC Interface"
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
 
